@@ -20,7 +20,7 @@ import time
 from robot.api import logger
 from robot.errors import (ContinueForLoop, DataError, ExecutionFailed,
                           ExecutionFailures, ExecutionPassed, ExitForLoop,
-                          PassExecution, ReturnFromKeyword)
+                          PassExecution, ReturnFromKeyword, SkipExecution)
 from robot.running import Keyword, RUN_KW_REGISTER
 from robot.running.context import EXECUTION_CONTEXTS
 from robot.running.usererrorhandler import UserErrorHandler
@@ -528,6 +528,9 @@ class _Verify(_BuiltInBase):
         """
         self._set_and_remove_tags(tags)
         raise AssertionError(msg) if msg else AssertionError()
+
+    def skip(self, msg='Test skipped'):
+        raise SkipExecution(msg)
 
     def fatal_error(self, msg=None):
         """Stops the whole test execution.
